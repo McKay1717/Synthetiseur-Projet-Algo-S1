@@ -8,7 +8,7 @@ public class GuiThread implements Runnable {
 
 	@Override
 	public void run() {
-		int ECHANTIONAGE = 1;
+		int ECHANTIONAGE = 50;
 		StdDraw.setXscale(0, signal.length);
 		StdDraw.setYscale(-1, 1);
 		StdDraw.show(1);

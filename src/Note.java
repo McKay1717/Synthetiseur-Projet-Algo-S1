@@ -13,9 +13,19 @@ public class Note {
 	public double amp;
 	double[] signal;
 
-	/*
-	 * Le constructeur permettant de déclarer/allouer une note par Note note =
-	 * new Note(ton, alter, octave, duree, amplitude);
+	/**
+	 * constructeur permettant de déclarer/allouer une note
+	 * 
+	 * @param tB
+	 *            Le Ton do, re, mi, fa, sol, si
+	 * @param alt
+	 *            L'ateration b ou #
+	 * @param oct
+	 *            L'octave
+	 * @param dur
+	 *            La durée
+	 * @param amp
+	 *            L'amplitude de la note
 	 */
 	public Note(String tB, char alt, int oct, double dur, double amp) {
 		duree = dur;
@@ -30,6 +40,12 @@ public class Note {
 		}
 	}
 
+	/**
+	 * Contructeur de copie
+	 * 
+	 * @param oldNote
+	 *            La note à copier
+	 */
 	public Note(Note oldNote) {
 		duree = oldNote.duree;
 		alter = oldNote.alter;
@@ -40,8 +56,11 @@ public class Note {
 		signal = oldNote.signal.clone();
 	}
 
-	/*
+	/**
 	 * méthode main() de test de la classe Note
+	 * 
+	 * @param args
+	 *            Liste des arguments de la commande
 	 */
 	public static void main(String[] args) {
 		int i, oct;
@@ -58,6 +77,17 @@ public class Note {
 		}
 	}
 
+	/***
+	 * Retroune la note décrite en prametre
+	 * 
+	 * @param toneBase
+	 *            le ton voulu, ex : la si
+	 * @param alter
+	 *            L'ateration b ou #
+	 * @param octave
+	 *            L'octave de la note voulu
+	 * @return la frequance de la note décrite en parametre sous forme d'un réel
+	 */
 	private static double freqTone(String toneBase, char alter, int octave) {
 		double freq = -1;
 		int notePos = -1;
@@ -91,9 +121,11 @@ public class Note {
 		return freq;
 	}
 
+	/**
+	 * Joue la note
+	 */
 	public void play() {
 		StdAudio.play(signal);
-
 	}
 
 	public static Note sToNote(String tonalite, double amplitude, double duree,
