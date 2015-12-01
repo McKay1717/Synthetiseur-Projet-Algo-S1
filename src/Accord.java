@@ -20,15 +20,15 @@ public class Accord {
 	}
 
 	/**
-	 * Ajoute une note à l'accord
+	 * Ajoute une note Ã  l'accord
 	 * 
 	 * @param not
-	 *            Objet note à ajouter
+	 *            Objet note Ã  ajouter
 	 */
 	public void addNote(Note not) {
 		// Pour tout objet note dans le tableau notes, faire
 		for (Note obj : notes) {
-			// Au première indice ayant pour valeur null on attribut la nouvelle
+			// Au premiÃ©re indice ayant pour valeur null on attribut la nouvelle
 			// note
 			if (obj == null) {
 				obj = not;
@@ -54,10 +54,10 @@ public class Accord {
 			}
 
 		}
-		// Création de l'instance du Thread d'affichage
+		// CrÃ©ation de l'instance du Thread d'affichage
 		GuiThread guirunable = new GuiThread(signal);
 		Thread guiThread = new Thread(guirunable);
-		// Déamarage du Thread d'affichage
+		// DÃ©marage du Thread d'affichage
 		guiThread.start();
 		// Lancement de la lecture du signal
 		StdAudio.play(signal);
