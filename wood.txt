@@ -1,4 +1,4 @@
-fa3,fa1,croche,1
+fa3,fa1,croche,1.0
 la3,la1,croche,1
 si3,la1,croche,1
 si3,la1,croche,1

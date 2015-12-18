@@ -45,21 +45,32 @@ public class Synthe {
 	}
 
 	/*
-	 * Méthode playLigne à ajouter ici
+	 * Méthode playLigne a ajouter ici
 	 */
 	public static void playLigne(String ligne, boolean harm, boolean guitar) {
 		Accord acc;
 		Note[] notetab = new Note[4];
+		// Découpage de la chaine en un tableaux de chaine
 		String[] tab = ligne.split(",");
+		// Récupération de l'amplitude
 		double amp = Double.parseDouble(tab[tab.length - 1]);
+		// Récupération du type de note
 		String face = tab[tab.length - 2];
+		// Evaluation de la durée de l'accord en fonction du type de note
 		double duration = Note.faceToDuration(face, tempo);
+		// Génération des notes
 		for (int i = tab.length - 3; i >= 0; i--) {
 			notetab[i] = Note.sToNote(tab[i], amp, duration, harm);
 		}
 
+		// Création d'une instance de Accord
 		acc = new Accord(notetab[0]);
+		// Ajout des autres notes à l'accord
+		for (int j = 1; j < notetab.length; j++) {
+			acc.addNote(notetab[j]);
+		}
 
+		// Joue l'accord
 		acc.play();
 
 	}

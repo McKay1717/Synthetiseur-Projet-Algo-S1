@@ -1,15 +1,1 @@
-si3,croche,1.0
-si3,croche,1.0
-do5,croche,1.0
-re5,croche,1.0
-re5,croche,1.0
-do5,croche,1.0
-si3,croche,1.0
-la5,croche,1.0
-sol3,croche,1.0
-sol3,croche,1.0
-la5,croche,1.0
-si3,croche,1.0
-la5,croche,1.0
-sol5,croche,1.0
-sol5,croche,1.0
+si3,si3,do3,re3,croche,1.0

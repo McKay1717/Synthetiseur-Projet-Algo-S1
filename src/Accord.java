@@ -26,13 +26,15 @@ public class Accord {
 	 *            Objet note à ajouter
 	 */
 	public void addNote(Note not) {
+		boolean exit = false;
 		// Pour tout objet note dans le tableau notes, faire
-		for (Note obj : notes) {
+		for (int i = 0; i < notes.length && !exit; i++) {
 			// Au premiére indice ayant pour valeur null on attribut la nouvelle
 			// note
-			if (obj == null) {
-				obj = not;
-				break;
+			if (notes[i] == null) {
+
+				notes[i] = not;
+				exit = true;
 			}
 		}
 	}
@@ -41,19 +43,27 @@ public class Accord {
 	 * Joue l'accord
 	 */
 	public void play() {
+		int count = 0;
 		// Pour tout objet note dans le tableau notes, faire
 		for (Note obj : notes) {
 			// Si l'objet n'est pas null, on ajoute son signal au signal de
 			// l'accord
+
 			if (obj != null) {
+				count++;
+
 				for (int j = 0; j < signal.length; j++) {
 					signal[j] += obj.signal[j];
-					signal[j] /= notes.length;
+				}
+
+				for (int k = 0; k < signal.length; k++) {
+					signal[k] /= ((double) count + 1);
 
 				}
 			}
 
 		}
+
 		// Création de l'instance du Thread d'affichage
 		GuiThread guirunable = new GuiThread(signal);
 		Thread guiThread = new Thread(guirunable);

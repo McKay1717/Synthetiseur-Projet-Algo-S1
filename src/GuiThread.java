@@ -25,12 +25,17 @@ public class GuiThread implements Runnable {
 		StdDraw.setYscale(-1, 1);
 		// Désactivation des animation
 		StdDraw.show(1);
-		// Nettoyage de la fénetre
+		// Nettoyage de la fenetre
 		StdDraw.clear();
 
 		// Parcourt le signal et trace une ligne tout les ECHANTIONAGE points
 		for (int i = 0; i + ECHANTIONAGE < signal.length; i += ECHANTIONAGE) {
-			StdDraw.line(i, signal[i], i + ECHANTIONAGE, signal[i + ECHANTIONAGE]);
+			if(Math.abs(signal[i]) > 1d)
+			{
+				System.out.println(signal[i]);
+			}
+			StdDraw.line(i, signal[i], i + ECHANTIONAGE, signal[i
+					+ ECHANTIONAGE]);
 		}
 
 	}

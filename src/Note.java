@@ -1,7 +1,8 @@
 import java.util.Arrays;
 
 public class Note {
-	final static double[] fondFreq = { 32.70, 65.41, 130.81, 261.63, 523.25, 1046.50, 2093.00, 4186.01 };
+	final static double[] fondFreq = { 32.70, 65.41, 130.81, 261.63, 523.25,
+			1046.50, 2093.00, 4186.01 };
 	final static String[] tons = { "do", "re", "mi", "fa", "sol", "la", "si" };
 	final static int[] haut = { 0, 2, 4, 5, 7, 9, 11 };
 	public String toneBase;
@@ -71,7 +72,8 @@ public class Note {
 			oct = Integer.parseInt(args[0]);
 		for (i = 0; i < 7; i++) {
 			Note not = new Note(tons[i], ' ', oct, 1.0, 1.0);
-			System.out.print(not.toneBase + ", octave " + not.octave + "  f0 =" + fondFreq[not.octave] + "Hz, F =");
+			System.out.print(not.toneBase + ", octave " + not.octave + "  f0 ="
+					+ fondFreq[not.octave] + "Hz, F =");
 			System.out.format("%.2f Hz%n", not.freq);
 			not.play();
 		}
@@ -89,9 +91,15 @@ public class Note {
 	 * @return la frequance de la note décrite en parametre sous forme d'un réel
 	 */
 	private static double freqTone(String toneBase, char alter, int octave) {
+		// Initialisation de la frequance à -1 pour éviter la variable non
+		// défini et permetre une éventuel detection d'érreur
 		double freq = -1;
 		int notePos = -1;
+		// On parcourt tout le tableau de tons pour trouver la note passer en
+		// argument
 		for (int i = 0; i < tons.length; i++) {
+			// Si la note correspond on génére la fréquance de base et on stock
+			// la position de la note.
 			if (toneBase.contains(tons[i])) {
 				freq = fondFreq[octave] * Math.pow(2.0, haut[i] / 12.0);
 
@@ -99,10 +107,12 @@ public class Note {
 			}
 
 		}
+		// On traite les deux cas possible d'altération
 		switch (alter) {
 
 		case '#':
 			if (notePos != (tons.length - 1)) {
+				// On se deplace d'un demi ton
 				freq = freq * Math.pow(2, 1.0 / 12.0);
 			} else {
 				freq = fondFreq[octave];
@@ -110,6 +120,7 @@ public class Note {
 			break;
 		case 'b':
 			if (notePos != 0) {
+				// On se deplace d'un demi ton
 				freq = freq * Math.pow(2, -1.0 / 12.0);
 			} else {
 				freq = fondFreq[octave] * Math.pow(2.0, 11 / 12.0);
@@ -128,13 +139,27 @@ public class Note {
 		StdAudio.play(signal);
 	}
 
-	public static Note sToNote(String tonalite, double amplitude, double duree, boolean harmon) {
+	/**
+	 * Génére un objet décrit par les paramétres suivant
+	 * 
+	 * @param tonalite
+	 *            la note avec son octave et son éventuel altération
+	 * @param amplitude
+	 *            L'amplitude de la note voulu
+	 * @param duree
+	 *            La durée de la note voulu
+	 * @param harmon
+	 *            Si l'on veut ou non des harmonique
+	 * @return Un objet Note
+	 */
+	public static Note sToNote(String tonalite, double amplitude, double duree,
+			boolean harmon) {
 		// Définiton de l'atération par defaut
 		char alter = ' ';
 		// Définition de l'octave par defaut
 		int octave = 0;
 		String ton = "";
-		// Découpage de la variable tonalité en tableau de caractère
+		// Découpage de la variable tonalité en tableau de caractére
 		char[] Tonalitetab = tonalite.toCharArray();
 		// Liste des octaves possible
 		char[] oct = { '0', '1', '2', '3', '4', '5', '6', '7' };
@@ -162,28 +187,42 @@ public class Note {
 		}
 		String fomatedton = "";
 		char[] tonCharArray = ton.toCharArray();
-		for (int m = 0; !(tonCharArray[m] == alter || tonCharArray[m] == ("" + octave).toCharArray()[0]); m++) {
+		for (int m = 0; !(tonCharArray[m] == alter || tonCharArray[m] == ("" + octave)
+				.toCharArray()[0]); m++) {
 
 			fomatedton += tonCharArray[m];
 
 		}
+		// Supression des caractére superflux
 		ton = fomatedton.trim();
 
 		Note note = new Note(ton, alter, octave, duree, amplitude);
 		if (harmon) {
 			double[][] Harmosignal = new double[3][(int) (StdAudio.SAMPLE_RATE * duree)];
+			// Stockage d'un calcul pour évité sa ré évaluation à chaque
+			// itération
 			double coef = 2.0 * Math.PI * note.freq;
+			// On remplie le signal des 3 sinusoide des harmonique de 0
 			Arrays.fill(Harmosignal[0], 0);
 			Arrays.fill(Harmosignal[1], 0);
 			Arrays.fill(Harmosignal[2], 0);
 
+			// Génération des harmonique
 			for (int j = 0; j < Harmosignal[0].length; j++) {
-				Harmosignal[0][j] = amplitude / 4.0 * Math.sin(coef * (0.5) * j / StdAudio.SAMPLE_RATE);
-				Harmosignal[1][j] = amplitude / 4.0 * Math.sin(coef * (2.0) * j / StdAudio.SAMPLE_RATE);
-				Harmosignal[2][j] = amplitude / 8.0 * Math.sin(coef * (3.0) * j / StdAudio.SAMPLE_RATE);
+				Harmosignal[0][j] = (amplitude / 4.0)
+						* Math.sin(coef * (0.5) * j / StdAudio.SAMPLE_RATE);
+				Harmosignal[1][j] = (amplitude / 4.0)
+						* Math.sin(coef * (2.0) * j / StdAudio.SAMPLE_RATE);
+				Harmosignal[2][j] = (amplitude / 8.0)
+						* Math.sin(coef * (3.0) * j / StdAudio.SAMPLE_RATE);
 			}
+			// Ajout au signal de la note
 			for (int g = 0; g < note.signal.length - 1; g++) {
-				note.signal[g] += (Harmosignal[0][g] + Harmosignal[1][g] + Harmosignal[2][g]) / 3.0;
+				note.signal[g] += (Harmosignal[0][g] + Harmosignal[1][g] + Harmosignal[2][g]);
+
+				note.signal[g] /= 1.25;
+	
+
 			}
 
 		}
@@ -191,6 +230,15 @@ public class Note {
 
 	}
 
+	/**
+	 * Traduit le type de note en temps
+	 * 
+	 * @param figure
+	 *            le type de note
+	 * @param tempo
+	 *            le nombre de noir joué par minute
+	 * @return Le temps de la note
+	 */
 	public static double faceToDuration(String figure, int tempo) {
 		double Figurevalue = 0;
 		switch (figure) {
